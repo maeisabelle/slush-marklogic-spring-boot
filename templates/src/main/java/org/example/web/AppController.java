@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.example.auth.util.AuthUtil;
 import org.example.client.DigestRestClient;
 import org.example.client.DigestRestClientSession;
 import org.slf4j.Logger;
@@ -41,6 +42,10 @@ public class AppController implements ErrorController {
     @Autowired
     private DigestRestClient digestRestClient;
 
+
+    @Autowired
+    private AuthUtil authUtil;
+
     /**
      * Assumes that the root URL should use a template named "index", which presumably will setup the Angular app.
      */
@@ -58,12 +63,7 @@ public class AppController implements ErrorController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         response.setContentType("application/json");
         if (auth != null && auth.isAuthenticated()) {
-            String username = null;
-            if (auth.getPrincipal() instanceof User) {
-                username = ((User) auth.getPrincipal()).getUsername();
-            } else {
-                username = auth.getPrincipal().toString();
-            }
+            String username = authUtil.getUsername(auth);
             return String.format("{\"authenticated\":true, \"username\":\"%s\"}", username);
         }
         return "{\"authenticated\":false}";
@@ -76,6 +76,15 @@ public class AppController implements ErrorController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String showLoginPage() {
         return "login";
+    }
+
+    /**
+     * Assumes that Spring Security is configured to use a custom form for a login page with a URL of "/saml-login", with the
+     * template for that form being named "samllogin".
+     */
+    @RequestMapping(value = "/samllogin", method = RequestMethod.GET)
+    public String showSAMLLoginPage() {
+        return "samllogin";
     }
 
     /**

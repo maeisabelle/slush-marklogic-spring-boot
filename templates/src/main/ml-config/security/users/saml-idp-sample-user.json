@@ -1,0 +1,6 @@
+{
+  "user-name": "saml-idp-sample-user",
+  "description": "The default user for the application registered in the Idp",
+  "password": "cbd8aaf144e2b36bcecd8d71d80994ff6408d3a1cd7b7e17e4f7ecd6acf7a89f",
+  "role": ["admin"]
+}

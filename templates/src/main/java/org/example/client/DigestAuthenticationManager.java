@@ -6,11 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -55,8 +57,16 @@ public class DigestAuthenticationManager implements AuthenticationProvider, Auth
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
         String username = token.getPrincipal().toString();
         String password = token.getCredentials().toString();
+        Collection<? extends GrantedAuthority> authorities = token.getAuthorities();
 
-        DigestRestClientSession clientSession = new DigestRestClientSession(username, password, token.getAuthorities());
+        return createSession(username, password, authorities);
+
+    }
+
+    public Authentication createSession(String username, String password,
+        Collection<? extends GrantedAuthority> authorities) {
+
+        DigestRestClientSession clientSession = new DigestRestClientSession(username, password, authorities);
         try {
             //load a RestTemplate and link it to the client session
             RestTemplate client = digestRestTemplateLoader.load(clientSession);
@@ -77,6 +87,7 @@ public class DigestAuthenticationManager implements AuthenticationProvider, Auth
         }
 
         return clientSession;
+
     }
 
     public void setPathToAuthenticateAgainst(String pathToAuthenticateAgainst) {

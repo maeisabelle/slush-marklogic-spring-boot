@@ -1,0 +1,30 @@
+<html>
+
+<head>
+    <base href="/"/>
+    <meta charset="utf-8"/>
+    <title>Spring</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width"/>
+    <!--/* Hacky meta tag so that the Angular webapp can recognize when the user's session has expired */-->
+    <meta name="springBootLoginForm" content=""/>
+    <!--/* Refresh to lessen the chance of the Spring Boot CSRF token expiring */-->
+    <meta http-equiv="refresh" content="60;"/>
+    <link rel="shortcut icon" th:href="@{images/favicon.ico}"/>
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- inject:css -->
+    <!-- endinject -->
+</head>
+
+<body>
+<div class="container" style="margin: 100px auto;width:200px;">
+    <form th:action="@{/saml/login}" method="post">
+        <div th:if="${param.error}" class="alert alert-error">Authentication Error.</div>
+        <div th:if="${param.logout}" class="alert alert-success">You have been logged out.</div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+    </form>
+</div>
+</body>
+
+</html>

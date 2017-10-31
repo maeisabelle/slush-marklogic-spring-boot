@@ -16,4 +16,14 @@
     <appender-ref ref="STDOUT" />
   </logger>
 
+  <logger name="PROTOCOL_MESSAGE" level="DEBUG"/>
+
+  <logger name="org.opensaml" level="DEBUG">
+    <appender-ref ref="STDOUT" />
+  </logger>
+
+  <logger name="org.springframework.security.saml" level="DEBUG">
+    <appender-ref ref="STDOUT" />
+  </logger>
+
 </configuration>

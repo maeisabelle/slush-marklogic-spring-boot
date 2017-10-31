@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base href="/" />
+    <meta charset="utf-8" />
+    <title>Identity Provider Selection</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="shortcut icon" th:href="@{images/favicon.ico}" />
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- inject:css -->
+    <!-- endinject -->
+</head>
+<body>
+<div class="container">
+    <center>
+        <h1>Select your Identity Provider:</h1>
+        <form th:action="${idpDiscoReturnURL}" method="get">
+            <div th:each="idp : ${idps}">
+                <input type="radio" th:name="${idpDiscoReturnParam}" th:id="'idp_' + ${idp}" th:value="${idp}" />
+                <label th:for="'idp_' + ${idp}" ><span th:text="${idp}">null</span></label>
+            </div>
+            <p>
+                <input type="submit" value="Login" />
+            </p>
+        </form>
+    </center>
+</div>
+</body>
+</html>
